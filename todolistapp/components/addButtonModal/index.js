@@ -108,7 +108,11 @@ const AddButtonModal = (props) => {
                       index={i}
                       labelHorizontal={true}
                       onPress={() => handleChangeSelect(i)}
-                      labelStyle={{fontSize: 17, color: listColor[i]}}
+                      labelStyle={{
+                        fontSize: 17,
+                        color: listColor[i],
+                        marginLeft: -10,
+                      }}
                       labelWrapStyle={{}}
                     />
                   </RadioButton>

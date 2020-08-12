@@ -1,38 +1,35 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import {
   Container,
   Header,
-  Left,
   Content,
   Text,
   Icon,
-  Right,
-  Input,
-  Form,
-  Item,
   Card,
   CardItem,
-  CheckBox,
 } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import {TaskItem} from '../../components';
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
 
-const HomeScreen = (props) => {
+const HomeScreen = ({navigation}) => {
   return (
     <Container>
       <Header style={style.header}>
         <LinearGradient colors={['#19769f', '#35d8a6']} style={{flex: 1}}>
           <View style={style.headerView}>
-            <Icon style={style.textHeader} name="menu-outline" />
-            <Text style={{fontSize: 20, color: 'white'}}>Task</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.openDrawer();
+                console.log('avc');
+              }}>
+              <Icon style={style.textHeader} name="menu-outline" />
+            </TouchableOpacity>
+            <Text style={{fontSize: 20, color: 'white'}}>ToDo List</Text>
             <Icon
               name="ellipsis-vertical-outline"
               style={{fontSize: 30, color: 'white'}}
