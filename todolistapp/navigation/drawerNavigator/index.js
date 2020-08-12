@@ -2,11 +2,13 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {TabNavigator} from '../../navigation';
 
+import {HeaderDrawer} from '../../components';
+
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator drawerContent={(props) => <HeaderDrawer {...props} />}>
       <Drawer.Screen
         name="Home"
         component={TabNavigator}
