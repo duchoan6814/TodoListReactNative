@@ -2,9 +2,23 @@ import React, {useState} from 'react';
 import {View, Text} from 'react-native';
 import {Button, Icon, Form, Item, Input} from 'native-base';
 import Modal from 'react-native-modal';
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel,
+} from 'react-native-simple-radio-button';
 
 const AddButtonModal = (props) => {
   const [isModal, setModal] = useState(false);
+  const [selectRadio, setSelectRadio] = useState(0);
+  const [dataRadio, setDataRadio] = useState([
+    {label: 'Lever 1', value: 0},
+    {label: 'Lever 2', value: 1},
+    {label: 'Lever 3', value: 2},
+  ]);
+  const [listColor, setListColor] = useState(['#5fe5bc', '#ffe277', '#ffb367']);
+
+  const handleChangeSelect = (i) => setSelectRadio(i);
   return (
     <>
       <Button
@@ -16,7 +30,6 @@ const AddButtonModal = (props) => {
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: 35,
-          // opacity: 0,
         }}
         onPress={() => {
           setModal(true);
@@ -26,15 +39,15 @@ const AddButtonModal = (props) => {
       <Modal
         avoidKeyboard={true}
         isVisible={isModal}
-        onBackdropPress={() => {
-          setModal(false);
-        }}
+        // onBackdropPress={() => {
+        //   setModal(false);
+        // }}
         onBackButtonPress={() => {
           setModal(false);
         }}>
         <View
           style={{
-            flex: 1 / 2,
+            paddingBottom: 30,
             backgroundColor: 'white',
             borderRadius: 10,
             paddingHorizontal: 20,
@@ -56,8 +69,6 @@ const AddButtonModal = (props) => {
                 borderRadius: 35,
                 borderColor: 'white',
                 borderWidth: 3,
-
-                // opacity: 0,
               }}>
               <Icon name="flag" style={{color: 'white', fontSize: 40}} />
             </View>
@@ -71,18 +82,74 @@ const AddButtonModal = (props) => {
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-around',
+                justifyContent: 'center',
                 // marginLeft: -15,
                 marginTop: 20,
+                alignItems: 'center',
+                marginLeft: -15,
               }}>
-              {/* <CheckBox
-                label="RadioButton"
-                size={30}
-                checked={this.state.isRadioSelected}
-                onPress={this.handleSelectedRadionButton}
-                uncheckedIconName="radio-button-unchecked"
-                checkedIconName="radio-button-checked"
-              /> */}
+              <RadioForm formHorizontal={true} animation={true}>
+                {dataRadio.map((obj, i) => (
+                  <RadioButton labelHorizontal={false} key={i}>
+                    <RadioButtonInput
+                      obj={obj}
+                      index={i}
+                      isSelected={selectRadio === i}
+                      onPress={handleChangeSelect}
+                      borderWidth={1}
+                      buttonInnerColor={listColor[i]}
+                      buttonOuterColor={listColor[i]}
+                      buttonSize={30}
+                      buttonOuterSize={40}
+                      buttonStyle={{}}
+                    />
+                    <RadioButtonLabel
+                      obj={obj}
+                      index={i}
+                      labelHorizontal={true}
+                      onPress={() => handleChangeSelect(i)}
+                      labelStyle={{fontSize: 17, color: listColor[i]}}
+                      labelWrapStyle={{}}
+                    />
+                  </RadioButton>
+                ))}
+              </RadioForm>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                marginTop: 40,
+              }}>
+              <Button
+                onPress={() => {
+                  setModal(false);
+                }}
+                rounded
+                block
+                iconLeft
+                danger>
+                <Icon name="home" />
+              </Button>
+              <Button
+                rounded
+                iconLeft
+                block
+                onPress={() => {
+                  console.log('ab');
+                }}
+                style={{
+                  backgroundColor: '#5fe5bc',
+                  width: 200,
+                  justifyContent: 'flex-start',
+                  flexDirection: 'row',
+                }}>
+                <Icon
+                  style={{fontSize: 30, marginLeft: -30}}
+                  name="checkmark-outline"
+                />
+                <Text style={{fontSize: 17, color: 'white'}}>Add</Text>
+              </Button>
             </View>
           </View>
         </View>
