@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {
   Container,
@@ -15,8 +15,38 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import dataMock from '../../dataMock';
 
+const date = new Date();
+
+const listMonth = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 const HomeScreen = ({navigation}) => {
   const [dataTask, setDataTask] = useState(dataMock);
+  const [today, setToday] = useState(
+    date.getDate() +
+      'th ' +
+      listMonth[date.getMonth() - 1] +
+      ' ' +
+      date.getFullYear(),
+  );
+  const handlePressCheckBox = (index) => {
+    const data = dataTask;
+    data[index].checked = !data[index].checked;
+    setDataTask([...data]);
+  };
+
   return (
     <Container>
       <Header style={style.header}>
@@ -25,7 +55,6 @@ const HomeScreen = ({navigation}) => {
             <TouchableOpacity
               onPress={() => {
                 navigation.openDrawer();
-                console.log('avc');
               }}>
               <Icon style={style.textHeader} name="menu-outline" />
             </TouchableOpacity>
@@ -109,26 +138,19 @@ const HomeScreen = ({navigation}) => {
             borderBottomColor: '#5fe5bc',
             justifyContent: 'center',
           }}>
-          <Text style={{fontWeight: 'bold', fontSize: 20}}>4th March 2020</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 20}}>{today}</Text>
         </CardItem>
 
         <Content style={{}}>
-          {dataTask.map((item) => (
+          {dataTask.map((item, index) => (
             <TaskItem
               content={item.content}
               lever={item.lever}
               checked={item.checked}
+              handlePressCheckBox={handlePressCheckBox}
+              index={index}
             />
           ))}
-          {/* <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem /> */}
         </Content>
       </Card>
     </Container>
