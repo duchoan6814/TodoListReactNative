@@ -1,12 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image} from 'react-native';
 import {Container, Content, Icon} from 'native-base';
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const HeaderDrawer = (props) => {
+  const {screenIndex, handleChangeScreen, navigation} = props;
+  const [listNavigation] = useState([
+    {
+      icon: 'home',
+      text: 'Home',
+    },
+    {
+      icon: 'checkbox-outline',
+      text: 'Done',
+    },
+    {
+      icon: 'person-outline',
+      text: 'Profile',
+    },
+    {
+      icon: 'information-circle-outline',
+      text: 'Imformation',
+    },
+  ]);
+
+  const handleChangeScreenInside = (index) => {
+    handleChangeScreen(index);
+    navigation.closeDrawer();
+  };
+
   return (
     <Container>
       <View
@@ -55,57 +77,36 @@ const HeaderDrawer = (props) => {
           flex: 1,
         }}>
         <View style={{paddingVertical: 10}}>
-          <TouchableOpacity onPress={() => {}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: 50,
-                paddingHorizontal: 10,
+          {listNavigation.map((item, index) => (
+            <TouchableOpacity
+              onPress={() => {
+                handleChangeScreenInside(index);
               }}>
-              <Icon name="home" style={{marginRight: 10}} />
-              <Text style={{fontSize: 17}}>Home</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: 50,
-                paddingHorizontal: 10,
-              }}>
-              <Icon name="checkbox-outline" style={{marginRight: 10}} />
-              <Text style={{fontSize: 17}}>Done</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: 50,
-                paddingHorizontal: 10,
-              }}>
-              <Icon name="person-outline" style={{marginRight: 10}} />
-              <Text style={{fontSize: 17}}>Profile</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: 50,
-                paddingHorizontal: 10,
-              }}>
-              <Icon
-                name="information-circle-outline"
-                style={{marginRight: 10}}
-              />
-              <Text style={{fontSize: 17}}>imformation</Text>
-            </View>
-          </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  height: 50,
+                  paddingHorizontal: 10,
+                  backgroundColor: screenIndex === index ? '#5fe5bc' : 'white',
+                }}>
+                <Icon
+                  name={item.icon}
+                  style={{
+                    marginRight: 10,
+                    color: screenIndex === index ? 'white' : 'black',
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 17,
+                    color: screenIndex === index ? 'white' : 'black',
+                  }}>
+                  {item.text}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
         <TouchableOpacity style={{}}>
           <View
