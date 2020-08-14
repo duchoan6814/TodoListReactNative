@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {
   Container,
@@ -11,12 +11,12 @@ import {
 } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import {TaskItem} from '../../components';
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+
+import dataMock from '../../dataMock';
 
 const HomeScreen = ({navigation}) => {
+  const [dataTask, setDataTask] = useState(dataMock);
   return (
     <Container>
       <Header style={style.header}>
@@ -113,6 +113,14 @@ const HomeScreen = ({navigation}) => {
         </CardItem>
 
         <Content style={{}}>
+          {dataTask.map((item) => (
+            <TaskItem
+              content={item.content}
+              lever={item.lever}
+              checked={item.checked}
+            />
+          ))}
+          {/* <TaskItem />
           <TaskItem />
           <TaskItem />
           <TaskItem />
@@ -120,8 +128,7 @@ const HomeScreen = ({navigation}) => {
           <TaskItem />
           <TaskItem />
           <TaskItem />
-          <TaskItem />
-          <TaskItem />
+          <TaskItem /> */}
         </Content>
       </Card>
     </Container>

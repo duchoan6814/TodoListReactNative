@@ -1,8 +1,16 @@
 import React from 'react';
-import {CardItem} from 'native-base';
-import {Text, View, CheckBox} from 'react-native';
+import {CardItem, Item} from 'native-base';
+import {Text, View} from 'react-native';
+import CheckBox from 'react-native-check-box';
 
 const TaskItem = (props) => {
+  const {content, lever, checked} = props;
+
+  const renderColorCheckBox = (lever) => {
+    if (lever === 1) return '#5fe5bc';
+    if (lever === 2) return '#ffb367';
+    return '#95389e';
+  };
   return (
     <CardItem
       style={{
@@ -37,7 +45,11 @@ const TaskItem = (props) => {
             flex: 1,
             flexDirection: 'row',
           }}>
-          <View style={{flex: 1 / 25, backgroundColor: '#5fe5bc'}}></View>
+          <View
+            style={{
+              flex: 1 / 25,
+              backgroundColor: renderColorCheckBox(lever),
+            }}></View>
           <View
             style={{
               flex: 24 / 25,
@@ -46,11 +58,11 @@ const TaskItem = (props) => {
               paddingHorizontal: 10,
               justifyContent: 'space-between',
             }}>
-            <Text style={{fontSize: 20}}>Bai tap ve nha</Text>
+            <Text style={{fontSize: 20}}>{content}</Text>
             <CheckBox
               style={{marginLeft: 0, marginRight: 20}}
-              checked={false}
-              color="green"
+              isChecked={checked}
+              checkBoxColor={renderColorCheckBox(lever)}
             />
           </View>
         </View>

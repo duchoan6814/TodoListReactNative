@@ -16,7 +16,7 @@ const AddButtonModal = (props) => {
     {label: 'Lever 2', value: 1},
     {label: 'Lever 3', value: 2},
   ]);
-  const [listColor, setListColor] = useState(['#5fe5bc', '#ffe277', '#ffb367']);
+  const [listColor, setListColor] = useState(['#5fe5bc', '#ffb367', '#95389e']);
 
   const handleChangeSelect = (i) => setSelectRadio(i);
   return (

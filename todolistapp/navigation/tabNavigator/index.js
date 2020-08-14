@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Icon} from 'native-base';
 
@@ -7,12 +7,12 @@ import {AddbuttonModal} from '../../components';
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = ({route}) => {
-  const {screenName} = route.params;
+const TabNavigator = ({route, navigation}) => {
+  const {handleChangeScreen} = route.params;
 
   return (
     <Tab.Navigator
-      initialRouteName={screenName}
+      initialRouteName={route.name}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
