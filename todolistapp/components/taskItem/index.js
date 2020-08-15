@@ -4,7 +4,7 @@ import {Text, View} from 'react-native';
 import CheckBox from 'react-native-check-box';
 
 const TaskItem = (props) => {
-  const {content, lever, checked, handlePressCheckBox, index} = props;
+  const {content, lever, checked, handlePressCheckBox, id} = props;
 
   const renderColorCheckBox = (lever) => {
     if (lever === 1) return '#5fe5bc';
@@ -70,7 +70,7 @@ const TaskItem = (props) => {
               style={{marginLeft: 0, marginRight: 20}}
               isChecked={checked}
               checkBoxColor={renderColorCheckBox(lever)}
-              onClick={() => handlePressCheckBox(index)}
+              onClick={() => handlePressCheckBox(id)}
             />
           </View>
         </View>

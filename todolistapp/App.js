@@ -13,10 +13,15 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Icon} from 'native-base';
 import {DrawerNavigator} from './navigation';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import allreducer from './reducer';
 
 import {AddbuttonModal} from './components';
 
 const Tab = createBottomTabNavigator();
+
+const store = createStore(allreducer);
 
 const App: () => React$Node = () => {
   const changeWhenLoginTrue = () => {
@@ -30,9 +35,11 @@ const App: () => React$Node = () => {
   // }
 
   return (
-    <NavigationContainer>
-      <DrawerNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <DrawerNavigator />
+      </NavigationContainer>
+    </Provider>
   );
 };
 

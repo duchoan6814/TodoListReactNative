@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {
   Container,
@@ -12,6 +12,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {TaskItem} from '../../components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector, useDispatch, useStore} from 'react-redux';
+import {toggleCheck} from '../../actions/taskAction';
 
 import dataMock from '../../dataMock';
 
@@ -33,7 +35,7 @@ const listMonth = [
 ];
 
 const HomeScreen = ({navigation}) => {
-  const [dataTask, setDataTask] = useState(dataMock);
+  const [dataTask, setDataTask] = useState([]);
   const [today, setToday] = useState(
     date.getDate() +
       'th ' +
@@ -41,11 +43,22 @@ const HomeScreen = ({navigation}) => {
       ' ' +
       date.getFullYear(),
   );
-  const handlePressCheckBox = (index) => {
-    const data = dataTask;
-    data[index].checked = !data[index].checked;
-    setDataTask([...data]);
+
+  const store = useStore();
+  const dispatch = useDispatch();
+
+  const handlePressCheckBox = (id) => {
+    dispatch({type: 'TOGGLE_DATA', payload: id});
   };
+
+  store.subscribe(() => {
+    setDataTask(store.getState().task.data);
+  });
+
+  useEffect(() => {
+    dispatch({type: 'FETCH_DATA', payload: dataMock});
+    // setDataTask(store.getState().task.data);
+  }, []);
 
   return (
     <Container>
@@ -148,7 +161,7 @@ const HomeScreen = ({navigation}) => {
               lever={item.lever}
               checked={item.checked}
               handlePressCheckBox={handlePressCheckBox}
-              index={index}
+              id={item.id}
             />
           ))}
         </Content>
