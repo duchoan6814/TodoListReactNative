@@ -10,10 +10,10 @@ import {
   CardItem,
 } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
-import {TaskItem} from '../../components';
+import {TaskItem, BtnTask} from '../../components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSelector, useDispatch, useStore} from 'react-redux';
-import {toggleCheck} from '../../actions/taskAction';
+import {useDispatch, useStore} from 'react-redux';
+import SwipeOut from 'react-native-swipeout';
 
 import dataMock from '../../dataMock';
 
@@ -36,6 +36,7 @@ const listMonth = [
 
 const HomeScreen = ({navigation}) => {
   const [dataTask, setDataTask] = useState([]);
+  const [itemOpen, setItemOpen] = useState(-1);
   const [today, setToday] = useState(
     date.getDate() +
       'th ' +
@@ -156,13 +157,32 @@ const HomeScreen = ({navigation}) => {
 
         <Content style={{}}>
           {dataTask.map((item, index) => (
-            <TaskItem
-              content={item.content}
-              lever={item.lever}
-              checked={item.checked}
-              handlePressCheckBox={handlePressCheckBox}
-              id={item.id}
-            />
+            <SwipeOut
+              onOpen={() => {
+                setItemOpen(index);
+              }}
+              close={index !== itemOpen}
+              autoClose={true}
+              sensitivity={50}
+              buttonWidth={67}
+              backgroundColor="white"
+              right={[
+                {
+                  backgroundColor: 'white',
+                  component: <BtnTask type="delete" />,
+                },
+              ]}
+              left={[
+                {backgroundColor: 'white', component: <BtnTask type="edit" />},
+              ]}>
+              <TaskItem
+                content={item.content}
+                lever={item.lever}
+                checked={item.checked}
+                handlePressCheckBox={handlePressCheckBox}
+                id={item.id}
+              />
+            </SwipeOut>
           ))}
         </Content>
       </Card>
