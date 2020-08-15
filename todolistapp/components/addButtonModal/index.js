@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {Button, Icon, Form, Item, Input} from 'native-base';
 import Modal from 'react-native-modal';
+import uuid from 'react-native-uuid';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
@@ -11,6 +13,7 @@ import RadioForm, {
 const AddButtonModal = (props) => {
   const [isModal, setModal] = useState(false);
   const [selectRadio, setSelectRadio] = useState(0);
+  const [dataInput, setDataInput] = useState('');
   const [dataRadio, setDataRadio] = useState([
     {label: 'Lever 1', value: 0},
     {label: 'Lever 2', value: 1},
@@ -19,6 +22,22 @@ const AddButtonModal = (props) => {
   const [listColor, setListColor] = useState(['#5fe5bc', '#ffb367', '#95389e']);
 
   const handleChangeSelect = (i) => setSelectRadio(i);
+  const dispatch = useDispatch();
+
+  const handleWhenSubmit = () => {
+    const data = {
+      id: uuid.v4(),
+      content: dataInput,
+      lever: dataRadio[selectRadio].value + 1,
+      checked: false,
+    };
+    dispatch({
+      type: 'ADD_DATA',
+      payload: data,
+    });
+    setModal(false);
+  };
+
   return (
     <>
       <Button
@@ -76,7 +95,10 @@ const AddButtonModal = (props) => {
           <View style={{marginTop: 20}}>
             <Form>
               <Item rounded style={{paddingHorizontal: 10}}>
-                <Input placeholder="Input your task..." />
+                <Input
+                  placeholder="Input your task..."
+                  onChangeText={(text) => setDataInput(text)}
+                />
               </Item>
             </Form>
             <View
@@ -140,7 +162,7 @@ const AddButtonModal = (props) => {
                 iconLeft
                 block
                 onPress={() => {
-                  console.log('ab');
+                  handleWhenSubmit();
                 }}
                 style={{
                   backgroundColor: '#5fe5bc',

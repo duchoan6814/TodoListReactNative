@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {
   Container,
@@ -12,11 +12,54 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {TaskItem} from '../../components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector, useDispatch, useStore} from 'react-redux';
+import {toggleCheck} from '../../actions/taskAction';
 
 import dataMock from '../../dataMock';
 
+const date = new Date();
+
+const listMonth = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 const HomeScreen = ({navigation}) => {
-  const [dataTask, setDataTask] = useState(dataMock);
+  const [dataTask, setDataTask] = useState([]);
+  const [today, setToday] = useState(
+    date.getDate() +
+      'th ' +
+      listMonth[date.getMonth() - 1] +
+      ' ' +
+      date.getFullYear(),
+  );
+
+  const store = useStore();
+  const dispatch = useDispatch();
+
+  const handlePressCheckBox = (id) => {
+    dispatch({type: 'TOGGLE_DATA', payload: id});
+  };
+
+  store.subscribe(() => {
+    setDataTask(store.getState().task.data);
+  });
+
+  useEffect(() => {
+    dispatch({type: 'FETCH_DATA', payload: dataMock});
+    // setDataTask(store.getState().task.data);
+  }, []);
+
   return (
     <Container>
       <Header style={style.header}>
@@ -25,7 +68,6 @@ const HomeScreen = ({navigation}) => {
             <TouchableOpacity
               onPress={() => {
                 navigation.openDrawer();
-                console.log('avc');
               }}>
               <Icon style={style.textHeader} name="menu-outline" />
             </TouchableOpacity>
@@ -109,26 +151,19 @@ const HomeScreen = ({navigation}) => {
             borderBottomColor: '#5fe5bc',
             justifyContent: 'center',
           }}>
-          <Text style={{fontWeight: 'bold', fontSize: 20}}>4th March 2020</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 20}}>{today}</Text>
         </CardItem>
 
         <Content style={{}}>
-          {dataTask.map((item) => (
+          {dataTask.map((item, index) => (
             <TaskItem
               content={item.content}
               lever={item.lever}
               checked={item.checked}
+              handlePressCheckBox={handlePressCheckBox}
+              id={item.id}
             />
           ))}
-          {/* <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem /> */}
         </Content>
       </Card>
     </Container>

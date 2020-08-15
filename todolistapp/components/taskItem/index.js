@@ -4,13 +4,14 @@ import {Text, View} from 'react-native';
 import CheckBox from 'react-native-check-box';
 
 const TaskItem = (props) => {
-  const {content, lever, checked} = props;
+  const {content, lever, checked, handlePressCheckBox, id} = props;
 
   const renderColorCheckBox = (lever) => {
     if (lever === 1) return '#5fe5bc';
     if (lever === 2) return '#ffb367';
     return '#95389e';
   };
+
   return (
     <CardItem
       style={{
@@ -58,11 +59,18 @@ const TaskItem = (props) => {
               paddingHorizontal: 10,
               justifyContent: 'space-between',
             }}>
-            <Text style={{fontSize: 20}}>{content}</Text>
+            <Text
+              style={{
+                fontSize: 20,
+                textDecorationLine: checked ? 'line-through' : 'none',
+              }}>
+              {content}
+            </Text>
             <CheckBox
               style={{marginLeft: 0, marginRight: 20}}
               isChecked={checked}
               checkBoxColor={renderColorCheckBox(lever)}
+              onClick={() => handlePressCheckBox(id)}
             />
           </View>
         </View>
