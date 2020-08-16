@@ -10,9 +10,9 @@ import {
   CardItem,
 } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
-import {TaskItem, BtnTask} from '../../components';
+import {TaskItem, BtnTask, ModalDelete, Notification} from '../../components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useDispatch, useStore} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import SwipeOut from 'react-native-swipeout';
 
 import dataMock from '../../dataMock';
@@ -35,9 +35,13 @@ const listMonth = [
 ];
 
 const HomeScreen = ({navigation}) => {
-  const [dataTask, setDataTask] = useState([]);
   const [itemOpen, setItemOpen] = useState(-1);
-  const [today, setToday] = useState(
+  const [idDelete, setIdDelete] = useState('');
+  const [visibleModalDelete, setVisibleModalDelete] = useState(false);
+  const [visibleNotificationDelete, setVisibleNotificationDelete] = useState(
+    false,
+  );
+  const [today] = useState(
     date.getDate() +
       'th ' +
       listMonth[date.getMonth() - 1] +
@@ -45,20 +49,15 @@ const HomeScreen = ({navigation}) => {
       date.getFullYear(),
   );
 
-  const store = useStore();
   const dispatch = useDispatch();
+  const {data} = useSelector((state) => state.task);
 
   const handlePressCheckBox = (id) => {
     dispatch({type: 'TOGGLE_DATA', payload: id});
   };
 
-  store.subscribe(() => {
-    setDataTask(store.getState().task.data);
-  });
-
   useEffect(() => {
     dispatch({type: 'FETCH_DATA', payload: dataMock});
-    // setDataTask(store.getState().task.data);
   }, []);
 
   return (
@@ -156,7 +155,7 @@ const HomeScreen = ({navigation}) => {
         </CardItem>
 
         <Content style={{}}>
-          {dataTask.map((item, index) => (
+          {data.map((item, index) => (
             <SwipeOut
               onOpen={() => {
                 setItemOpen(index);
@@ -169,7 +168,14 @@ const HomeScreen = ({navigation}) => {
               right={[
                 {
                   backgroundColor: 'white',
-                  component: <BtnTask type="delete" />,
+                  component: (
+                    <BtnTask
+                      id={item.id}
+                      setIdDelete={setIdDelete}
+                      showModal={setVisibleModalDelete}
+                      type="delete"
+                    />
+                  ),
                 },
               ]}
               left={[
@@ -186,6 +192,18 @@ const HomeScreen = ({navigation}) => {
           ))}
         </Content>
       </Card>
+      <ModalDelete
+        id={idDelete}
+        isModal={visibleModalDelete}
+        setModal={setVisibleModalDelete}
+        setVisibleNotificationDelete={setVisibleNotificationDelete}
+      />
+      <Notification
+        content="Xóa thành công"
+        type="success"
+        isVisible={visibleNotificationDelete}
+        setVisible={setVisibleNotificationDelete}
+      />
     </Container>
   );
 };

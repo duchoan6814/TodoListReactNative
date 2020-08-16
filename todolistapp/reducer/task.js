@@ -24,12 +24,12 @@ export default (state = initialState, action) => {
     case 'TOGGLE_DATA':
       return {
         ...state,
-        data: state.data.map((item, index) =>
+        data: state.data.map((item) =>
           action.payload === item.id ? {...item, checked: !item.checked} : item,
         ),
       };
 
-    case 'DELETE_DATE':
+    case 'DELETE_DATA':
       return {
         ...state,
         data: state.data.filter((item) => item.id !== action.payload),

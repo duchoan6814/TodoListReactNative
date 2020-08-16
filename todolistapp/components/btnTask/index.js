@@ -2,10 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {Icon, Button} from 'native-base';
 const BtnTask = (props) => {
-  const {type} = props;
-  const renderIcon = (type) => {
-    return type === 'edit' ? 'create-outline' : 'trash-outline';
-  };
+  const {type, showModal, id, setIdDelete} = props;
 
   const renderButton = (type) =>
     type === 'edit' ? (
@@ -13,7 +10,13 @@ const BtnTask = (props) => {
         <Icon name="create-outline" />
       </Button>
     ) : (
-      <Button rounded danger>
+      <Button
+        onPress={() => {
+          setIdDelete(id);
+          showModal(true);
+        }}
+        rounded
+        danger>
         <Icon name="trash-outline" />
       </Button>
     );

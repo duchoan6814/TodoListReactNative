@@ -5,3 +5,10 @@ export const getDataToday = () => (dispatch) => {
     payload: dataMock,
   });
 };
+
+export const deleteData = (id) => (dispatch) => {
+  dispatch({
+    type: 'DELETE_DATA',
+    payload: id,
+  });
+};
